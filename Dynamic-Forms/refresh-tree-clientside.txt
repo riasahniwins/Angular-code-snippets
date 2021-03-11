@@ -1,0 +1,126 @@
+public refreshTree(event: any) {
+    switch (event.node) {
+      case 'group':
+        if (event.action == 'add') {
+          let grouparr = [];
+          event.object.forEach(element => {
+            let obj = {
+              langId: element.languageId,
+              value: element.groupName,
+            };
+            grouparr.push(obj);
+          });
+          this.groupData.push({ id: event.id, groupOrder: event.orderNumber, parentId: 0, parentName: '-', services: null, children: [], name: JSON.stringify(grouparr) });
+        }
+        else if (event.action == 'delete') {
+          let index = this.groupData.findIndex(x => x.id == event.id)
+          this.groupData.splice(index, 1);
+        }
+        else if (event.action == 'update') {
+          let grouparr = [];
+          event.object.forEach(element => {
+            let obj = {
+              langId: element.languageId,
+              value: element.groupName,
+            };
+            grouparr.push(obj);
+          });
+          let index = this.groupData.findIndex(x => x.id == event.id)
+          this.groupData[index].name = null;
+          this.groupData[index].name = JSON.stringify(grouparr);
+          this.getGroupsStructure();
+        }
+        else {
+          return false;
+        }
+        break;
+      case 'sub':
+        if (event.action == 'add') {
+          let subarr = [];
+          event.object.forEach(element => {
+            let obj = {
+              langId: element.languageId,
+              value: element.groupName,
+            };
+            subarr.push(obj)
+          });
+          this.groupData.push({ id: event.id, groupOrder: event.orderNumber, parentId: this.trackingId, parentName: this.selectedValue, services: null, children: [], name: JSON.stringify(subarr) });
+        }
+        else if (event.action == 'update') {
+          let grouparr = [];
+          event.object.forEach(element => {
+            let obj = {
+              langId: element.languageId,
+              value: element.groupName,
+            };
+            grouparr.push(obj);
+          });
+          let index = this.groupData.findIndex(x => x.id == event.id)
+          this.groupData[index].name = JSON.stringify(grouparr);
+          this.getGroupsStructure();
+        }
+        else {
+          return false;
+        }
+        break;
+      case 'service': if (event.action == 'delete') {
+        let index = this.groupData.findIndex(x => x.id == event.parentId)
+        let serviceData = JSON.parse(this.groupData[index].services);
+        let serviceIndex = serviceData.findIndex(x => x.Id == event.id)
+        serviceData.splice(serviceIndex, 1);
+        this.getGroupsStructure();
+      }
+      else if (event.action == 'add') {
+        let index = this.groupData.findIndex(x => x.id == this.trackingId);
+        let namesArr = [];
+        event.object.forEach(element => {
+          let obj = {
+            langId: element.languageId,
+            value: element.serviceName,
+          };
+          namesArr.push(obj);
+        });
+        let descArr = [];
+        let serviceName: string = "";
+        serviceName = event.object[0].serviceName;
+        event.object.forEach(element => {
+          let obj = {
+            langId: element.languageId,
+            value: element.description,
+          };
+          descArr.push(obj);
+        });
+        let parsedData = this.groupData[index].services != null ? JSON.parse(this.groupData[index].services) : [];
+        parsedData.push({ Id: event.id, Name: serviceName, OrderNumber: event.orderNumber, serviceName: JSON.stringify(namesArr), serviceDescription: JSON.stringify(descArr) })
+        this.groupData[index].services = null;
+        this.groupData[index].services = JSON.stringify(parsedData);
+      }
+      else if (event.action == 'update') {
+        let index = this.groupData.findIndex(x => x.id == JSON.parse(sessionStorage.getItem('treeData')).listObj.id)
+        let namesArr = [];
+        event.object.forEach(element => {
+          let obj = {
+            langId: element.languageId,
+            value: element.serviceName,
+          };
+          namesArr.push(obj);
+        });
+        let descArr = [];
+        let serviceName: string = "";
+        serviceName = event.object[0].serviceName;
+        event.object.forEach(element => {
+          let obj = {
+            langId: element.languageId,
+            value: element.description,
+          };
+          descArr.push(obj);
+        });
+        let parsedData = this.groupData[index].services != null ? JSON.parse(this.groupData[index].services) : [];
+        let serviceIndex = parsedData.findIndex(x => x.Id == event.id)
+        parsedData[serviceIndex] = ({ Id: event.id, Name: serviceName, OrderNumber: event.orderNumber, serviceName: JSON.stringify(namesArr), serviceDescription: JSON.stringify(descArr) })
+        this.groupData[index].services = null;
+        this.groupData[index].services = JSON.stringify(parsedData);
+      }
+
+    }
+  }

@@ -1,0 +1,35 @@
+/*on form submit function call*/
+  public onSubmit() {
+    const controls = this.productForm.controls;
+    /** check form */
+    if (this.productForm.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
+      );
+      this.hasFormErrors = true;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    else {
+      this.hasFormErrors = false;
+      this.waitingText = "Please Wait...";
+      if (this.productForm.value.productId !== 0) {
+        this.productService.updateProduct(this.prepareUpdateRequest()).subscribe((response) => {
+          if (response.responseCode == 1) {
+            this.waitingText = "Save";
+            this.goBackWithoutId();
+            this.snackbar.openSnackBar('Product updated successfully', 'Success', 'primary-snackbar');
+          }
+        });
+      }
+      else {
+        this.productService.saveProduct(this.prepareAddRequest()).subscribe((response) => {
+          if (response.responseCode == 1) {
+            this.waitingText = "Save";
+            this.goBackWithoutId();
+            this.snackbar.openSnackBar('Product saved successfully!', 'Success', 'primary-snackbar');
+          }
+        });
+      }
+    }
+  }

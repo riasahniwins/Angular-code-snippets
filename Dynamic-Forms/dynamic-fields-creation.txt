@@ -1,0 +1,60 @@
+<form #fieldForm="ngForm" name="fieldForm" (ngSubmit)="fieldForm.valid" novalidate>
+        <app-loader [loader]="loader"></app-loader>
+        <section *ngFor="let fieldsData of addFieldsForm.formFields;let i= index">
+            <div class="ant-row row">
+                <div class="col-pad ant-col-md-8 ant-col-sm-24" *ngFor="let field of fieldsData.fields;let i = index">
+                    <div class="form-group" [class.has-error]="isInvalidField(fieldForm,fieldName)">
+                        <span labelValue [isLoaded]="isSpinning" key="FieldName"
+                            category="Labels"></span>({{field.languageTitle}})
+                        <input nz-input placeholder="Enter Field Name" #fieldName="ngModel" name="fieldName_{{i}}"
+                            [(ngModel)]="field.fieldName" [value]="field.fieldName" required />
+                        <span class="help-block" *ngIf="fieldName.errors?.required">Field Name is
+                            required</span>
+                    </div>
+                </div>
+                <div class="col-pad ant-col-md-8 ant-col-sm-24">
+                    <div class="form-group" [class.has-error]="isInvalidField(fieldForm,fieldType)">
+                        <span labelValue [isLoaded]="isSpinning" key="FieldType" category="Labels"></span>
+                        <nz-select nzSize="medium" nzShowSearch nzPlaceHolder="Choose Field Type" #fieldType="ngModel"
+                            name="fieldType" [(ngModel)]="fieldsData.fields[0].fieldType" required>
+                            <nz-option *ngFor="let type of fieldTypes|parse" nzLabel="{{type.Name}}"
+                                [nzValue]="type.Id">
+
+                            </nz-option>
+                        </nz-select>
+                        <span class="help-block" *ngIf="fieldType.errors?.required">Field Type is
+                            required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ant-row row">
+                <div class="col-pad ant-col-md-24 ant-col-sm-24" *ngIf="fieldId>0">
+                    <div class="ant-row row">
+                        <div class="col-pad ant-col-md-8 ant-col-sm-24">
+                            <div class="form-group">
+                                <span labelValue [isLoaded]="isSpinning" key="ConstraintType" category="Labels"></span>
+                                <nz-select nzSize="medium" nzShowSearch nzAllowClear required
+                                    nzPlaceHolder="Choose Constraint Type"
+                                    (ngModelChange)="onChangeConst($event,fieldForm)" name="selectedConstType"
+                                    [(ngModel)]="selectedConstType">
+                                    <nz-option *ngFor="let type of fieldConstraintTypes"
+                                        nzLabel="{{type.fieldConstraintName}}" [nzValue]="type.fieldConstraintTypes">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div class="col-pad ant-col-md-4 ant-col-sm-24">
+                            <div class="form-group">
+                                <label>Field</label>
+                                <button nz-button class="ant-btn-secondary" nzSize="medium" nz-popover
+                                    nzPopoverTitle="Constraint Types" [nzPopoverContent]="contentTemplate"
+                                    nzPopoverPlacement="bottomRight"><i nz-icon nzType="eye" nzTheme="outline"></i>
+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </for

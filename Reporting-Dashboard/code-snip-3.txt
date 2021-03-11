@@ -1,0 +1,38 @@
+public getEntityRep() {
+    Highcharts.setOptions({
+      lang: {
+        thousandsSep: ','
+      }
+    });
+    this.pieOptions = {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45,
+          beta: 0,
+        }
+      },
+      title: {
+        text: 'Transactions Amount Per Entity' + ' ' + '(' + this.amountMonth + ' ' + this.amountYear + ')'
+      },
+      navigator: {
+        enabled: false
+      },
+      plotOptions: {
+        pie: {
+          innerSize: 100,
+          depth: 45,
+          cursor: 'pointer'
+        }
+      },
+      series: [{
+        name: 'Transaction Amount',
+        data: this.EntitiesSumData
+      }],
+      tooltip: {
+        valueSuffix: " AED ",
+        pointFormat: '{series.name}: <b>{point.y:,.2f} AED</b><br/>',
+      },
+    };
+  }

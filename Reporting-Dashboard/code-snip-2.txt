@@ -1,0 +1,74 @@
+ /*Functions for binding chart one*/
+  public sunBurstAmount() {
+    this.getDaysData(this.requestModel);
+    /***Option specific all properties to format a graph ***/
+
+    let myOptions = {
+      chart: {
+        type: 'sunburst',
+      },
+      title: {
+        text: 'Transaction Amount'
+      },
+      colors: ['#2f7ed8', '#8bbc21', '#910000', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+      legend: {
+        reversed: true
+      },
+      plotOptions: {
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: (e) => {
+                this.bindFilteredData(e)
+                this.bindPieData(e)
+                this.bindMerchantData(e)
+              }
+            },
+          }
+        }
+      },
+      series: [{
+        type: 'sunburst',
+        allowDrillToNode: true,
+        cursor: 'pointer',
+        data: this.amountData,
+        dataLabels: {
+          format: '{point.name}',
+          filter: {
+            property: 'innerArcLength',
+            operator: '>',
+            value: 16
+          },
+          rotationMode: 'circular'
+        },
+        levels: [{
+          level: 2,
+          colorByPoint: true,
+          dataLabels: {
+            rotationMode: 'parallel'
+          }
+        },
+        {
+          level: 3,
+          colorVariation: {
+            key: 'brightness',
+            to: -0.5
+          }
+        }, {
+          level: 4,
+          colorVariation: {
+            key: 'brightness',
+            to: 0.5
+          }
+        }]
+      }],
+      tooltip: {
+        headerFormat: "",
+        pointFormat: 'The Transaction Amount of <b>{point.name}</b> is <b>{point.value:,.2f} AED</b>'
+      }
+    };
+    this.highcharts.createChart(this.chartEl.nativeElement, myOptions);
+
+  }

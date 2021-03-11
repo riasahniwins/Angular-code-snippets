@@ -1,0 +1,12 @@
+<div class="col-pad ant-col-md-6 ant-col-sm-24">
+                <div class="form-group" [class.has-error]="isInvalidField(addAction,actionType)">
+                    <span labelValue [isLoaded]="isSpinning" key="ActionType" category="Labels"></span>
+                    <nz-select nzSize="medium" nzShowSearch nzAllowClear required nzPlaceHolder="Choose Action Type"
+                        #actionType="ngModel" name="actionType" [(ngModel)]="actions.fields[0].actionType">
+                        <nz-option *ngFor="let type of actionTypes" [nzLabel]="type.actionType" [nzValue]="type.id">
+                        </nz-option>
+                    </nz-select>
+                    <span class="help-block" *ngIf="actionType.errors?.required">Action Type is
+                        required</span>
+                </div>
+            </div>

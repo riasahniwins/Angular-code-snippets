@@ -1,0 +1,43 @@
+<section class="charts">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="chart-block">
+							<div class="row">
+								<div class="col-md-4">
+									<activity-gauge [success]="logs.SuccessTransactionCount"
+										[pending]="logs.PendingTransactionCount" [failed]="logs.FailedTransactionCount">
+									</activity-gauge>
+								</div>
+								<div class="col-md-4">
+									<app-gaugeseries [chartType]="'gaugeTwo'" [maxAmount]="logs.MaxAmount"
+										[gaugeTwo]="logs.SuccessTransactionSum">
+									</app-gaugeseries>
+								</div>
+								<div class="col-md-4">
+									<app-gaugeseries [chartType]="'gaugeThree'" [maxAmount]="10"
+										[gaugeThree]="logs.TotalErrors">
+									</app-gaugeseries>
+								</div>
+								<div class="col-md-12">
+									<div class="chartsValue">
+										<div class="chartLabel"><b><i class="fa fa-check green" aria-hidden="true"></i>
+												Successful Transactions: </b><span>{{successCount}}</span></div>
+										<div class="chartLabel"><b><i class="fa fa-hourglass-half orange"
+													aria-hidden="true"></i> Pending Transactions :</b>
+											<span>{{pendingCount}}</span>
+										</div>
+										<div class="chartLabel"><b><i class="fa fa-times red"></i> Failed
+												Transactions:</b> <span>{{failedCount}}</span></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

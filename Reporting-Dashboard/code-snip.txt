@@ -1,0 +1,41 @@
+/***Function for binding report graphs of different types starts here ***/
+  public ServiceAmount() {
+    let myOptions = {
+      accessibility: {
+        screenReaderSection: {
+          beforeChartFormat: '<h5>{chartTitle}</h5>' +
+            '<div>{chartSubtitle}</div>' +
+            '<div>{chartLongdesc}</div>' +
+            '<div>{viewTableButton}</div>'
+        }
+      },
+      series: [{
+        type: 'wordcloud',
+        data: this.serviceAmountData,
+        name: 'Total Amount',
+        cursor: 'pointer',
+        minFontSize: 20
+      }],
+      title: {
+        text: 'Transactions Amount Per Service'
+      },
+      plotOptions: {
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: (e) => {
+                this.enAmountPerService(e);
+                this.dailyAmountPerService(e);
+              }
+            },
+          }
+        }
+      },
+      tooltip: {
+        headerFormat: "",
+        pointFormat: 'Transaction Amount of <b>{point.servicename}</b> is <b>{point.weight:,.2f} AED</b>'
+      }
+    };
+    this.highcharts.createChart(this.chartService1.nativeElement, myOptions);
+  }

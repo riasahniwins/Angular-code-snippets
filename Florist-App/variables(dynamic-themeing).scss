@@ -1,0 +1,139 @@
+body {
+    // --DefaultBgColor: #007be1;
+    // --DefaultColor: #007be1;
+    // --SidebarBgColor:#ffffff;
+    // --MenuBgColor: #ffffff; 
+    // --MenuColor: #000000;
+    // --enuActiveColor:#ffffff;
+    // --MenuActiveBackground:#007be1;
+    // --MenuHoverBackground:#007be1;
+    //--MenuActiveBackground:linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+    //--MenuActiveBackground:linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+    //--MenuActiveBackground:linear-gradient(to right, rgba(242,112,69,1) 32%, rgba(241,111,92,1) 35%, rgba(219,47,0,1) 64%, rgba(219,47,0,1) 100%);
+    // --MenuActiveBackground:linear-gradient(to right, rgba(242,112,69,1) 0%, rgba(241,111,92,1) 37%, rgba(219,47,0,1) 61%, rgba(219,47,0,1) 71%, rgba(219,47,0,1) 81%, rgba(219,47,0,1) 100%);
+    // --MenuHoverBackground:linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+    //--ButtonPrimaryBackground:linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+    --ButtonPrimaryColor:#fff;
+    --ButtonSecondaryBackground:#777777;
+    --ButtonSecondaryColor:#fff;
+    --ButtonSecondaryBorder:#777777;
+    
+    // Tab active/inactive
+    --ToggleTabEnabledBackground:#777777;
+    --ToggleTabDisabledBackground:#e0dfdf;
+    --ToggleTabActiveColor:#ffffff;
+    --ToggleTabInactiveColor:#000000;
+
+    // --CheckboxActiveColor:#007be1;
+    // --BreadcrumbActiveColor:#007be1;
+    // --BreadcrumbInactiveColor:#343a40;
+    // --CardheaderBgColor:#e2e2e2;
+    // --CardheaderColor:#000000;
+    // --TagColor:#fff;
+    // --TagBgColor:#777777;
+    // --LinkColor:#007be1;
+
+    --BoxBorderColor:#007be1;
+    --BoxDefaultColor:#007be1;
+    --BoxActiveBgColor:linear-gradient(to right, #5db2f3 32%, #54adf1 35%, #007ce1 64%, #007ce1 100%);
+    --BoxHoverBgColor:linear-gradient(to right, #5db2f3 32%, #54adf1 35%, #007ce1 64%, #007ce1 100%);
+    --BoxActiveBorderColor:#007be1;
+    --BoxActiveColor:#ffffff;
+
+
+
+    --LableColor:#007be1;
+
+    //Toggle active/inactive
+    --ToggleActiveBackground:#d2eafd;
+    --ToggleActiveBorderColor:#0f4fb3;
+    --ToggleInactiveBackground:#efeeee;
+    --ToggleInactiveBorderColor:#767676;
+    --stepperActiveBgColor: #007be1;
+    --stepperActiveColor:#fff;
+    --stepperDefaultBgColor:#000000;
+    --stepperDefaultColor:#fff;
+}
+
+
+// /*-- bgcolor variables --*/
+$bgDefaultColor: var(--DefaultBgColor);
+$bgWhiteColor: #ffffff;
+$bgTransparentColor: transparent;
+
+// /*--colors--*/
+$colorDefaultColor:var(--DefaultColor);
+$colorBlackColor: #000000;
+$colorWhiteColor: #ffffff;
+
+/*--sidebar menus --*/
+$sidebarBgColor: var(--SidebarBgColor); //#ffffff;
+$menuBgColor:var(--MenuBgColor); //#ffffff;
+$menuDefaultColor:var(--MenuColor);// #000000;
+$menuActiveColor:var(--MenuActiveColor); //#ffffff;
+$bgmenuActiveColor:  var(--MenuActiveBackground);//linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+$bgmenuHoverColor: var(--MenuHoverBackground); //linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+
+/*--Buttons menus --*/
+$buttonBgPrimary: var(--ButtonPrimaryBackground); //linear-gradient(to right, rgba(93,178,243,1) 32%, rgba(84,173,241,1) 35%, rgba(0,124,225,1) 64%, rgba(0,124,225,1) 100%);
+$buttonColorPrimary: var(--ButtonPrimaryColor); //#fff;
+
+$buttonBgGrey:var(--ButtonSecondaryBackground); //#777777;
+$buttonColorGrey:var(--ButtonSecondaryColor);//#fff;
+$buttonBorderGrey:var(--ButtonSecondaryBorder);//#777777;
+/*-- mat toggles menus --*/
+$toggleEnabled:var(--ToggleTabEnabledBackground);// #777777;
+$toggleDisabled:var(--ToggleTabDisabledBackground);// #e0dfdf;
+$toggleActiveColor:var(--ToggleTabActiveColor);//#ffffff;
+$toggleInactiveColor:var(--ToggleTabInactiveColor);//#000000;
+
+/*-- slide toggle menus --*/
+$backgroundActivecolor:var(--ToggleActiveBackground);// #d2eafd;
+$borderActiveColor:var(--ToggleActiveBorderColor);//#020303;
+$toggleActiveThumb:var(--ToggleActiveBorderColor);//#0f4fb3;
+
+$backgroundInactivecolor: var(--ToggleInactiveBackground);//#efeeee;
+$borderInactiveColor:var(--ToggleInactiveBorderColor); //#767676;
+$toggleInactiveThumb:var(--ToggleInactiveBorderColor);//#767676;
+
+/*-- checkboxes --*/
+$checkBoxActiveColor:var(--CheckboxActiveColor);//#007be1;
+
+/*--breadcrunb color */
+$breadcrumbActiveColor: var(--BreadcrumbActiveColor);//#007be1;
+$breadcrumbInactiveColor:var(--BreadcrumbInactiveColor); //#343a40;
+
+/*-- card color --*/
+$cardBgDefaultColor:var(--CardheaderBgColor);//#e2e2e2;
+$cardDefaultColor:var(--CardheaderColor);//#000000;
+
+/*--Tags Color --*/
+$tagColor: var(--TagColor);//#fff;
+$tagBgColor:var(--TagBgColor);//#777777;
+
+/*-- table Listing --*/
+$matCellcolor:var(--LinkColor);// #ff0000;
+
+
+/*--Stepper css --*/
+$stepperBgActiveColor:var(--stepperActiveBgColor);//#007be1;
+$stepperActiveColor:var(--stepperActiveColor);//#fff;
+
+$stepperBgDefaultColor:var(--stepperDefaultBgColor);//#000000;
+$stepperDefaultColor:var(--stepperDefaultColor);//#fff;
+
+
+
+
+$BoxBorderColor:var(--BoxBorderColor);
+$BoxDefaultColor:var(--BoxDefaultColor);
+$BoxActiveBgColor:var(--BoxActiveBgColor);
+$BoxHoverBgColor:var(--BoxHoverBgColor);
+$BoxHoverColor:var(--BoxHoverColor);
+$BoxActiveBorderColor:var(--BoxActiveBorderColor);
+$BoxActiveColor:var(--BoxActiveColor);
+
+
+
+
+

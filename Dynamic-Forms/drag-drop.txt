@@ -1,0 +1,12 @@
+  public drop(event: CdkDragDrop<string[]>) {
+    this.service.reOrder('Group/ReorderGroups', { GroupId: event.item.data.id, PreviousOrderNo: event.previousIndex, NewOrderNo: event.currentIndex })
+      .subscribe((response) => {
+        this.service.notify('success', 'Order Updated', response.Message);
+        this.getGroupsStructure();
+      },
+        (error) => {
+          this.service.notify('success', 'Order Not Updated', error.Message);
+
+        }
+      );
+  }

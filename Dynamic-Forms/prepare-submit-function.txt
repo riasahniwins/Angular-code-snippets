@@ -1,0 +1,16 @@
+public prepareAttachmentsAdd() {
+    let arr = [];
+    this.addAttachmentForm.formFields[0].fields.forEach((element, index) => {
+      let obj = {
+        id: 0,
+        name: element.attachmentName,
+        description: element.attachmentDesc,
+        attachmentTypeId: Number(this.addAttachmentForm.formFields[0].fields[0].attachmentType),
+        Constraints: null,
+        formSectionId: Number(this.sectionId),
+        languageId: element.languageId
+      };
+      arr.push(obj);
+    });
+    return arr;
+  }

@@ -1,0 +1,380 @@
+<!-- Title and Button section -->
+<div class="subheader subheader-solid" id="kt_subheader">
+	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap">
+
+		<div class="d-flex align-items-center flex-wrap mr-2">
+			<ul class="breadcrumb font-weight-bold p-0 my-2 font-size-sm">
+				<li class="breadcrumb-item"> Admin </li>
+				<li class="breadcrumb-item">
+					<a routerLink="/admin/products/pl" class="text-muted">Product</a>
+				</li>
+				<li class="breadcrumb-item">
+					<a class="text-muted">{{productLabels.title}}</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="d-flex align-items-center mt-10">
+			<a class="btn btn-outline-primary mr-2" (click)="goBackWithoutId()" mat-raised-button
+				matTooltip="Back to the products list">
+				<i class="la la-arrow-left"></i>
+				<span class="hidden-mobile">Back</span>
+			</a>
+			<a class="btn btn-outline-primary mr-2" (click)="reset()" mat-raised-button matTooltip="Reset changes">
+				<i class="la la-cog"></i>
+				<span class="hidden-mobile">Reset</span>
+			</a>
+			<button class="btn-primary mr-2" [disabled]="waitingText!=='Save'" mat-raised-button
+				matTooltip="Save & Continue" ChangeBtn (click)="onSubmit()">
+				{{waitingText}}
+			</button>
+		</div>
+
+	</div>
+</div>
+
+<!-- Spinner -->
+<app-spinner-component [loading]="isLoading"></app-spinner-component>
+
+<!-- Body Part -->
+<div class="d-flex flex-column-fluid">
+	<div class="container-fluid pad-4">
+		<kt-portlet>
+			<kt-portlet-body>
+				<!--begin::Form-->
+				<form [formGroup]="productForm" class="form form-group-seperator-dashed">
+					<kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+						(close)="onAlertClose()">
+						Oh snap! Change a few things up and try submitting again.
+					</kt-alert>
+
+					<div class="form-section form-section-first">
+						<div class="basicInfo">
+							<h4 class="title">Basic Information</h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-6 kt-margin-bottom-10-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Product Name</mat-label>
+											<input type="text" matInput placeholder="Enter Product Name"
+												(focusout)="checkDuplicate()" formControlName="name">
+											<mat-error>
+												This is
+												<strong>required</strong>
+											</mat-error>
+											<span style="color: red;" *ngIf="message!=null">
+												{{message}}
+											</span>
+										</mat-form-field>
+									</div>
+									<div class="col-lg-6 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Product Short Description</mat-label>
+											<input type="text" matInput placeholder="Enter Product Short Description"
+												cols="6" rows="6" formControlName="shortDescription">
+											<mat-error>
+												This is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+
+									<div class="col-lg-12 kt-margin-bottom-20-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Product Description</mat-label>
+											<textarea type="text" matInput placeholder="Enter Product Description"
+												cols="6" rows="6" formControlName="description"></textarea>
+										</mat-form-field>
+									</div>
+
+									<div class="col-lg-12 kt-margin-bottom-20-mobile">
+										<app-tag-component formControlName="tags" [selected]="tags"
+											[categoryName]="'ProductTags'" [data]="tags" [ph]="'Enter Product Tags'"
+											[lb]="'Product Tags'" [keyName]="'tagName'">
+										</app-tag-component>
+									</div>
+
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">Product Status</h5>
+										<mat-slide-toggle formControlName="isActive">
+										</mat-slide-toggle>
+									</div>
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner"> AddOn</h5>
+										<mat-slide-toggle formControlName="addOns"></mat-slide-toggle>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+
+						<div class="basicInfo">
+							<h4 class="title">Product Images</h4>
+							<mat-card>
+								<app-img-grid formControlName="images" [selected]="images">
+									<!-- <mat-error *ngIf="productForm.controls.images.errors.required">
+										This is
+										<strong>required</strong>
+									</mat-error> -->
+								</app-img-grid>
+
+								<!--color palette button and color boxes in edit mode-->
+								<div class="form-group productSelected">
+									<div class="productBtn">
+										<button (click)="chooseColor()" type="button" mat-raised-button color="primary"
+											class="btn-primary mr-3">Choose
+											Product Color
+										</button>
+									</div>
+									<div class="selectedColors" *ngIf="colors && colors.length>0">
+										<label>Selected Colors:</label>
+									</div>
+
+									<div class="colorPaletteInner" *ngIf="colors && colors.length>0">
+										<label *ngFor="let data of colors;let i=index"
+											[style.background-color]="data.ColorCode" [matTooltip]="data.ColorValue"
+											class="custom-control {{data.ColorCode}}-checkbox checkBox">
+											<span class="fill-control-indicator"></span>
+											<span class="fill-control-description"></span>
+										</label>
+									</div>
+
+								</div>
+
+								<form *ngIf="showColorPalette">
+									<div class="colorPalette">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="colorPaletteInner">
+													<ng-container *ngFor="let data of colorData;let i =index">
+														<label [style.background-color]="data.ColorCode"
+															[matTooltip]="data.ColorValue"
+															class="custom-control {{data.ColorCode}}-checkbox checkBox"
+															[class.active]="data.Active==true">
+															<input type="checkbox" (click)="addColors(data)"
+																class="fill-control-input">
+														</label>
+													</ng-container>
+
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="text-right">
+										<button type="button" class="btn btn-primary" (click)="closePalette()"
+											data-dismiss="modal">Done</button>
+									</div>
+								</form>
+
+							</mat-card>
+						</div>
+
+
+						<div class="basicInfo">
+							<h4 class="title">Product Pricing</h4>
+							<mat-card>
+								<div class="form-group row" formArrayName="prices">
+									<ng-container
+										*ngFor="let item of productForm.get('prices')['controls']; let i = index;">
+										<div [formGroupName]="i" class="col-md-12 form-group row">
+											<div class="col-md-1 kt-margin-bottom-10-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-label>Size</mat-label>
+													{{item.controls.size.value}}
+													<input type="text" matInput [hidden]="true"
+														formControlName="size" />
+												</mat-form-field>
+											</div>
+											<div class="col-md-3 kt-margin-bottom-10-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-label>Cost Price</mat-label>
+													<input type="number" matInput placeholder="Enter Cost Price"
+														formControlName="costPrice" />
+													<mat-error>
+														This is
+														<strong>required</strong>
+													</mat-error>
+												</mat-form-field>
+											</div>
+											<div class="col-md-3 kt-margin-bottom-10-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-label>Regular Price </mat-label>
+													<input type="number" matInput placeholder="Enter Regular Price"
+														formControlName="regularPrice" />
+													<mat-error>
+														This is
+														<strong>required</strong>
+													</mat-error>
+												</mat-form-field>
+											</div>
+
+											<div class="col-md-3 kt-margin-bottom-10-mobile">
+												<mat-form-field class="mat-form-field-fluid">
+													<mat-label>Sale Price</mat-label>
+													<input type="number" matInput placeholder="Enter Sale Price"
+														formControlName="salePrice" />
+													<mat-error>
+														This is
+														<strong>required</strong>
+													</mat-error>
+												</mat-form-field>
+											</div>
+											<div class="col-md-2 kt-margin-bottom-10-mobile">
+												<div class="taxable">
+													<div class="taxableAmnt">
+														<label style="padding: 15px 0 0 0;">Not Taxable</label>
+													</div>
+													<div class="taxableTogge">
+														<mat-slide-toggle formControlName="notTaxable">
+														</mat-slide-toggle>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</ng-container>
+									<!-- <mat-error *ngIf="hasFormErrors==true">
+										Enter price for at least one size
+									</mat-error> -->
+								</div>
+							</mat-card>
+						</div>
+
+						<!--Stock availability-->
+						<div class="basicInfo">
+							<h4 class="title">Stock Availability</h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-6 kt-margin-bottom-10-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Stock Quantity</mat-label>
+											<input type="number" matInput placeholder="Enter Stock Quantity"
+												formControlName="stockQuantity">
+										</mat-form-field>
+									</div>
+									<div class="col-md-6 kt-margin-bottom-10-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Stock Availability</mat-label>
+											<input matInput placeholder="Choose Stock Availability"
+												formControlName="stockAvailability" [matAutocomplete]="status">
+											<mat-autocomplete #status="matAutocomplete">
+												<mat-option *ngFor="let status of stockAvailabilityStatus"
+													[value]="status.name">
+													{{ status.name }}
+												</mat-option>
+											</mat-autocomplete>
+											<mat-error>
+												This is
+												<strong>required</strong>
+											</mat-error>
+										</mat-form-field>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+
+						<!-- Product Vendors -->
+						<div class="basicInfo">
+							<h4 class="title">Product Vendors</h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-10 kt-margin-bottom-10-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select formControlName="vendors" placeholder="Search Product Vendors"
+												[multiple]="true">
+												<mat-select-search formControlName="vendors">
+												</mat-select-search>
+												<mat-option *ngFor="let vendor of vendorsData | async"
+													[value]="vendor.vendorId">
+													{{vendor.vendorName}}</mat-option>
+												<!-- [value]="vendorsData.filter(obj => obj.vendorId === vendor.vendorId)" -->
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-md-2 kt-margin-bottom-20-mobile text-right">
+										<button routerLink="/crm/addVendors" type="button" mat-button
+											class="btn-primary">Add
+											Vendor
+										</button>
+									</div>
+
+								</div>
+							</mat-card>
+						</div>
+						<!--Product add-ons-->
+						<div class="basicInfo">
+							<app-addOn-component formControlName="addOnsProducts" [data]="addonsList$|async">
+							</app-addOn-component>
+						</div>
+						<!--Product publish-->
+						<div class="basicInfo">
+							<h4 class="title">Publish Product </h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">Customer Mobile App</h5>
+										<mat-slide-toggle formControlName="mobileApp"></mat-slide-toggle>
+									</div>
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">BloomRunner.com</h5>
+										<mat-slide-toggle formControlName="bloomrunner"></mat-slide-toggle>
+									</div>
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">Florist Shop POS</h5>
+										<mat-slide-toggle formControlName="walkIn"></mat-slide-toggle>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+
+						<!--Product posting-->
+						<div class="basicInfo">
+							<h4 class="title">Post Product On</h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">Facebook</h5>
+										<mat-slide-toggle formControlName="facebook"></mat-slide-toggle>
+									</div>
+									<div class="col-md-4 kt-margin-bottom-10-mobile toggleStatus">
+										<h5 class="titleInner">Instagram</h5>
+										<mat-slide-toggle formControlName="instagram"></mat-slide-toggle>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+
+						<!--Seo information-->
+						<div class="basicInfo">
+							<h4 class="title">Seo Information</h4>
+							<mat-card>
+								<div class="form-group row">
+									<div class="col-md-12 kt-margin-bottom-10-mobile">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Meta Description</mat-label>
+											<input matInput placeholder="Enter Meta Description"
+												formControlName="metaDescription">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="form-group row">
+									<div class="col-md-12 kt-margin-bottom-10-mobile">
+										<app-tag-component formControlName="metaKeywords" [selected]="metaKeywords"
+											[categoryName]="'MetaTags'" [data]="metaKeywords"
+											[ph]="'Enter Meta Keywords'" [lb]="'Meta Keywords'" [keyName]="'tagName'">
+										</app-tag-component>
+									</div>
+								</div>
+							</mat-card>
+						</div>
+						<!-- Attributes selector -->
+						<div class="basicInfo">
+							<app-atb-component formControlName="attributes"></app-atb-component>
+						</div>
+						<!-- End Attributes selector -->
+					</div>
+				</form>
+				<!--end::Form-->
+			</kt-portlet-body>
+		</kt-portlet>
+	</div>
+</div>
